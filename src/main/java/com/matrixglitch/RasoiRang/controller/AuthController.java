@@ -1,6 +1,5 @@
 package com.matrixglitch.RasoiRang.controller;
 
-
 import com.matrixglitch.RasoiRang.model.User;
 import com.matrixglitch.RasoiRang.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,6 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
         Map<String, Object> response = new LinkedHashMap<>();
@@ -58,7 +56,3 @@ public class AuthController {
         }
     }
 }
-
-
-
-
