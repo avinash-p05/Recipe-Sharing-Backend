@@ -78,4 +78,51 @@ public class RecipeService {
         return savedRecipe;
     }
 
+
+    public Map<String, Object> saveRecipe(String email, String recipeId) {
+        Map<String, Object> response = new HashMap<>();
+
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (!userOptional.isPresent()) {
+            response.put("success", false);
+            response.put("message", "User not found");
+        } else {
+            User user = userOptional.get();
+            if (user.getSavedRecipes() == null) {
+                user.setSavedRecipes(new ArrayList<>());
+            }
+
+            if (!user.getSavedRecipes().contains(recipeId)) {
+                user.getSavedRecipes().add(recipeId);
+                userRepository.save(user);
+                response.put("success", true);
+                response.put("message", "Recipe Saved Successfully");
+            } else {
+                response.put("success", false);
+                response.put("message", "Recipe already saved");
+            }
+        }
+
+        return response;
+    }
+
+    public List<Recipe> getSavedRecipes(String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (!userOptional.isPresent()) {
+            return new ArrayList<>();
+        }
+
+        User user = userOptional.get();
+        if (user.getSavedRecipes() == null) {
+            return new ArrayList<>();
+        }
+
+        List<Recipe> savedRecipes = new ArrayList<>();
+        for (String recipeId : user.getSavedRecipes()) {
+            recipeRepository.findById(recipeId).ifPresent(savedRecipes::add);
+        }
+
+        return savedRecipes;
+    }
+
 }

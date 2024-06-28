@@ -5,6 +5,7 @@ import com.matrixglitch.RasoiRang.model.User;
 import com.matrixglitch.RasoiRang.repository.UserRepository;
 import com.matrixglitch.RasoiRang.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -105,5 +106,36 @@ public class RecipeController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/saveRecipe/{email}/{recipeId}")
+    public ResponseEntity<Map<String, Object>> saveRecipe(@PathVariable String email, @PathVariable String recipeId) {
+        Map<String, Object> response = recipeService.saveRecipe(email, recipeId);
+
+        if ((boolean) response.get("success")) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
+
+    @GetMapping("/savedRecipes/{email}")
+    public ResponseEntity<Map<String, Object>> getSavedRecipes(@PathVariable String email) {
+        List<Recipe> savedRecipes = recipeService.getSavedRecipes(email);
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        if (savedRecipes.isEmpty()) {
+            response.put("success", false);
+            response.put("message", "No saved recipes found for the given email");
+            response.put("data", savedRecipes);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } else {
+            response.put("success", true);
+            response.put("message", "Saved recipes fetched successfully");
+            response.put("data", savedRecipes);
+            return ResponseEntity.ok(response);
+        }
+    }
+
 
 }
