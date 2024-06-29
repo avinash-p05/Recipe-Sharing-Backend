@@ -16,7 +16,7 @@ public interface RecipeRepository extends MongoRepository<Recipe, String> {
     @Query("{ 'date': ?0 }")
     List<Recipe> findByDate(String date, Sort sort);
 
-    @Query("{ 'date': { $regex: ?0, $options: 'i' } }")
-    List<Recipe> findByWeek(String weekPattern, Sort sort);
+
+    List<Recipe> findByDateBetween(String startDate, String endDate, Sort sort);
 }
 

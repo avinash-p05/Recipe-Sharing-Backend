@@ -47,10 +47,20 @@ public class RecipeService {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
             int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+            int year = calendar.get(Calendar.YEAR);
 
-            // The regex pattern to match dates in the same week of the year
-            String weekPattern = String.format("%d-W%02d", calendar.get(Calendar.YEAR), weekOfYear);
-            return recipeRepository.findByWeek(weekPattern, Sort.by(Sort.Order.desc("saves")));
+            // Calculate start and end dates of the week
+            calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+            Date startDate = calendar.getTime();
+            calendar.add(Calendar.DATE, 6);
+            Date endDate = calendar.getTime();
+
+            // Format the dates
+            String startDateStr = sdf.format(startDate);
+            String endDateStr = sdf.format(endDate);
+
+            // Find recipes between start and end dates
+            return recipeRepository.findByDateBetween(startDateStr, endDateStr, Sort.by(Sort.Order.desc("saves")));
         } catch (Exception e) {
             throw new RuntimeException("Invalid date format. Please use dd-MM-yyyy.");
         }

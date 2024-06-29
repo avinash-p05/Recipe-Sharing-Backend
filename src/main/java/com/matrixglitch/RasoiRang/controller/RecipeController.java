@@ -64,6 +64,7 @@ public class RecipeController {
         return ResponseEntity.ok(response);
     }
 
+
     @GetMapping("/getByDate/{date}")
     public ResponseEntity<Map<String, Object>> getByDate(@PathVariable String date) {
         List<Recipe> recipes = recipeService.getByDate(date);
