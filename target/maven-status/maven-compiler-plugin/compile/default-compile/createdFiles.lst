@@ -1,0 +1,9 @@
+com\matrixglitch\RasoiRang\controller\AuthController.class
+com\matrixglitch\RasoiRang\service\RecipeService.class
+com\matrixglitch\RasoiRang\model\Recipe.class
+com\matrixglitch\RasoiRang\model\User.class
+com\matrixglitch\RasoiRang\RasoiRangApplication.class
+com\matrixglitch\RasoiRang\controller\RecipeController.class
+com\matrixglitch\RasoiRang\repository\RecipeRepository.class
+com\matrixglitch\RasoiRang\service\UserService.class
+com\matrixglitch\RasoiRang\repository\UserRepository.class
